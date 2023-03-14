@@ -19,8 +19,8 @@ columnas = ["age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang"
 datos_iniciales = pd.read_csv('https://raw.githubusercontent.com/karen0c/Proyecto_1_ACTD/main/processed.cleveland.data',header=None, names=columnas, na_values="?")
 
 datos_iniciales = datos_iniciales.dropna().reset_index(drop=True) #elimina filas con valores faltantes
-print(datos_iniciales.head())
-print(datos_iniciales.tail())
+#print(datos_iniciales.head())
+#print(datos_iniciales.tail())
 
 # crear unos nuevos datos donde guardaremos la información con los datos discretizados
 datos = datos_iniciales
@@ -79,7 +79,7 @@ for i in range(0,297):
 from pgmpy.models import BayesianNetwork
 #from pgmpy.factors.discrete import TabularCPD
 
-modelo = BayesianNetwork([("sex", "num"), ("age", "chol"), ("age", "fbs"),("age", "trestbps"),("thal", "trestbps"), ("chol", "num"),("fbs", "trestbps"), ("trestbps", "num"),("num", "ca"),("num", "thalach"),("num", "exang"),("num", "oldpeak"),("num", "slope"),("exang", "cp"),("cp", "oldpeak"),("oldpeak", "restecg"),("slope","restecg")])
+modelo = BayesianNetwork([("sex", "chol"), ("age", "chol"), ("age", "fbs"),("thal", "trestbps"), ("chol", "num"),("fbs", "trestbps"), ("trestbps", "num"),("num", "ca"),("num", "thalach"),("num", "exang"),("num", "restecg"),("exang", "cp"),("cp", "oldpeak"),( "restecg","oldpeak"),("restecg","slope")])
 
 from pgmpy.estimators import MaximumLikelihoodEstimator 
 emv = MaximumLikelihoodEstimator(model=modelo, data=datos)
@@ -87,9 +87,10 @@ emv = MaximumLikelihoodEstimator(model=modelo, data=datos)
 modelo.fit(data=datos, estimator = MaximumLikelihoodEstimator) 
 
 #for i in modelo.nodes(): 
-  #print(modelo.get_cpds(i)) 
+ # print(modelo.get_cpds(i)) 
 
 infer = VariableElimination(modelo)
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
